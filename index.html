@@ -4,62 +4,104 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Limb Lab - Authorization Assistant</title>
+    
+    <link rel="icon" type="image/png" href="https://limblab.com/wp-content/uploads/2023/10/LimbLab-LogoImage-Glyph.png">
+
     <style>
-        body { margin: 0; padding: 0; }
+        /* 1. Forces full screen & clean font */
+        body, html { 
+            margin: 0; padding: 0; width: 100%; height: 100%; 
+            overflow: hidden; background-color: #ffffff; 
+            font-family: "Open Sans", "Segoe UI", sans-serif;
+        }
+        
+        /* 2. Forces YOUR InstaAgents component to fill the screen */
+        instaagents-fullchatbot { 
+            display: block; 
+            width: 100%; 
+            height: 100%; 
+            position: absolute; 
+            top: 0;
+            left: 0;
+        }
     </style>
 </head>
 <body>
-    
+
     <instaagents-fullchatbot></instaagents-fullchatbot>
 
     <script type="module">
-        import Chatbot from "https://cdn.jsdelivr.net/npm/instaagents-embed@latest/dist/web.js"
+        // IMPORTING YOUR NEW NPM PACKAGE v1.0.0
+        import Chatbot from "https://cdn.jsdelivr.net/npm/instaagents-embed/dist/web.js"
         
         Chatbot.initFull({
             chatflowid: "b562634e-5927-4d40-b3e2-12f948f92451",
-            apiHost: "https://agent.datainsta.com",
+            
+            // KEEPS THE VERCEL BRIDGE (Safety First)
+            // This ensures it works on Vercel without CORS errors
+            apiHost: window.location.origin, 
+            
             theme: {
+                // --- LIMB LAB BRANDING CSS ---
+                customCSS: `
+                    /* Header Force Blue */
+                    .chatbot-header {
+                        background-color: #0284c7 !important;
+                    }
+
+                    /* Bot Bubble (Purple Border/Glow) */
+                    [data-testid="host-bubble"] {
+                        background-color: rgb(240, 249, 255) !important;
+                        border: 1px solid rgba(140, 84, 251, 0.1) !important;
+                        box-shadow: 0 4px 15px rgba(140, 84, 251, 0.1) !important;
+                        border-radius: 6px !important;
+                        color: rgb(30, 41, 59) !important;
+                    }
+
+                    /* User Bubble (Purple Gradient) */
+                    [data-testid="user-bubble"] {
+                        background: linear-gradient(135deg, #8c54fb, #cb6ce6) !important;
+                        color: #ffffff !important;
+                        border-radius: 6px !important;
+                        box-shadow: 0 4px 15px rgba(140, 84, 251, 0.2) !important;
+                    }
+                `,
+
                 chatWindow: {
                     showTitle: true,
                     title: 'Limb Lab - Authorization Assistant',
-                    titleAvatarSrc: 'https://cdn-icons-png.flaticon.com/512/8757/8757478.png',
+                    titleAvatarSrc: 'https://limblab.com/wp-content/uploads/2023/10/LimbLab-LogoImage-Glyph.png',
                     welcomeMessage: 'Hello! I am your Insurance Authorization Assistant. Please paste the anonymous clinical notes below. Important: Include the Payer Name (e.g., Blue Cross) and L-Code (e.g., L5856), but DO NOT include the patient\'s real name or DOB.',
+                    starterPrompts: [], 
                     backgroundColor: '#ffffff',
                     
-                    // Bot Message Bubble (Light Blue + Robot Icon)
+                    // Fallback settings
                     botMessage: {
                         backgroundColor: '#f0f9ff',
                         textColor: '#1e293b',
                         showAvatar: true,
                         avatarSrc: 'https://cdn-icons-png.flaticon.com/512/8757/8757478.png'
                     },
-                    
-                    // User Message Bubble (Medical Blue)
                     userMessage: {
-                        backgroundColor: '#0284c7',
+                        backgroundColor: '#8c54fb', 
                         textColor: '#ffffff',
                         showAvatar: false
                     },
-                    
-                    // Input Area
                     textInput: {
                         placeholder: 'Paste messy clinical notes here...',
                         backgroundColor: '#ffffff',
                         textColor: '#1e293b',
-                        sendButtonColor: '#0284c7'
+                        sendButtonColor: '#8c54fb'
                     },
-                    
-                    // Footer Branding
-                    footer: {
-                        textColor: '#303235',
-                        text: 'Powered by',
+                    footer: { 
+                        showFooter: true, 
                         company: 'InstaAgents',
-                        companyLink: 'https://datainsta.com'
+                        companyLink: 'https://datainsta.com',
+                        textColor: '#9ca3af'
                     }
                 }
             }
         })
     </script>
-
 </body>
 </html>
